@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div id="content-container" class="container centered p-none">
+  <div class="lgn-container col-lg-8 centered">
+    <h1>Login</h1>
+    <form role="form" class="form-horizontal" method="post" action="{% url 'login' %}">{% csrf_token %}
+    <div class="form-group">
+            <p>
+                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}:</label>
+                <input class="form-control" id="{{ form.username.id_for_label }}" maxlength="30" placeholder="{{ form.username.label }}" name="{{ form.username.html_name }}" type="text" required/> 
+            </p>
+            <p>
+                <label for="{{ form.password.id_for_label }}">{{ form.password.label }}:</label>
+                <input class="form-control" id="{{ form.password.id_for_label }}" maxlength="30" placeholder="{{ form.password.label }}" name="{{ form.password.html_name }}" type="password" required/> 
+            </p>
+        {% if form.errors %}
+        <p class=" label label-danger">
+        Your username and password didn't match.
+        Please try again.
+        </p>
+        {% endif %}
+        <input type="submit" class="btn btn-primary" value="Login" />
+        <p class="text-center">If you don't already have an account, <a href="{% url 'signup' %}">register</a> one with us.</p>
+        <input type="hidden" name="next" value="{{ next }}" />
+    </div>
+    </form>
+  </div>
+</div>
+<script>check_storage()</script>
+{% endblock content %}

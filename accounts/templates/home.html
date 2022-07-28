@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %} {# If user is logged in #}
+{% load custom_tags %}
+  <div style="position: absolute; top: 2%; right: 2%; text-align: center;">
+    <h2><p style="color:navy;">{{ user.username }}</p></h2>
+    <form action="{% url 'logout' %}">
+      <button class="btn btn-outline-primary btn-sm">Log out</button>
+    </form>
+  </div>
+  <div class="top-left-logo">
+    <h1 style="color:navy;">SmartList</h1>
+  </div>
+  <div style="position: absolute; top: 10%; left: 3%;">
+    <form action="{% url 'manuallyadd' %}">
+      <button class="btn btn-outline-primary">Add to Watchlist</button>
+    </form> 
+    <form action="{% url 'importadd' %}">
+      <button class="btn btn-outline-primary">Import Service Watchlist</button>
+    </form>
+  </div>
+  <div>
+     <button class="btn btn-secondary" id="hcbutton" onclick="high_contrast()" style="position: absolute; bottom: 2%; left: 2%;">High Contrast Mode</button>
+  </div>
+  <div class="container">
+    <div class="centered divScroll blueScroll" aria-label="watchlist" id="watchlist-scroll">
+      {% if genre %}
+        {% for title in title_list %}
+          {% if genre in title.genre %}
+            <div>
+              <h4><strong>{{ title }}</strong></h4>
+              <a href="{% url 'edit' pk=title.pk %}">Edit</a>
+              <a href="{% url 'delete' pk=title.pk %}">Delete</a>
+              <p>Service: {{ title.service }}<br>
+                Genres: {{ title.genre }}<br>
+                {% if title.runtime %}
+                  Runtime: {{ title.runtime }}<br>
+                {% endif %}
+                {% if title.episodes %}
+                  Episodes: {{ title.episodes }}<br>
+                {% endif %}
+                Rating: {{ title.rating }}<br>
+                Media Type: {{ title.content_type }}<br>
+              </p>
+            </div>
+          {% endif %}
+        {% endfor %} 
+      {% else %}
+        {% for title in title_list %}
+          <div>
+            <h4><strong>{{ title }}</strong></h4>
+            <a href="{% url 'edit' pk=title.pk %}">Edit</a>
+            <a href="{% url 'delete' pk=title.pk %}">Delete</a>
+            <p>Service: {{ title.service }}<br>
+              Genres: {{ title.genre }}<br>
+              {% if title.runtime %}
+                Runtime: {{ title.runtime }}<br>
+              {% endif %}
+              {% if title.episodes %}
+                Episodes: {{ title.episodes }}<br>
+              {% endif %}
+              Rating: {{ title.rating }}<br>
+              Media Type: {{ title.content_type }}<br>
+            </p>
+          </div>
+        {% endfor %} 
+      {% endif %}
+      
+    </div>
+    <form method="post" action="{% url 'get_list' %}">
+      {% csrf_token %}
+      <p style="position: absolute; top: 3%; left: 25%;">Title Name:<br>{{ form.title_name }}</p>
+      <p style="position: absolute; top: 3%; left: 40%;">Service:<br>{{ form.service_name }}</p>
+      <p style="position: absolute; top: 3%; left: 55%;">Genre:<br>{{ form.genre }}</p>
+      <p style="position: absolute; top: 5%; left: 70%;">{{ form.sorts }}</p>
+      <button style="position: absolute; top: 10%; left: 70%;" class="btn btn-outline-primary" action="submit">Refresh List</button>
+    </form>
+  </div>
+{% else %} {# If user is not logged in #}
+  <div class="container">
+    <div class="centered" style="text-align: center;">
+      <h1>Welcome to SmartList</h1>
+      <h3>Please, <a href="{% url 'login' %}">sign in</a>.</h3>
+    </div>
+  </div>
+{% endif %}
+<script>check_storage()</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Add Titles{% endblock %}
+{% block content %} 
+  
+
+<div class="centered" style="text-align: center;">
+	<form method="post">
+		{% csrf_token %}
+		<p style="text-align: center;">Are you sure you want to delete "{{ object }}"?</p>
+    	<button class="btn btn-primary" type="submit">Confirm</button>
+	</form>
+	<p class="text-center">Return to <a href="{% url 'get_list' %}">home</a>.</p>
+</div>
+<script>check_storage()</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Add Titles{% endblock %}
+{% block content %} 
+  
+
+<!--Manually add stuff--> 
+<div class="container py-5 centered">
+	<div class="centered">
+		<div>
+			<h1 style="text-align: center;">Add Titles</h1>
+			<ul>
+				<li>Type title exactly as it is seen on the service.</li>
+				<li>If metadata fields are empty, they will attempt to be imported.</li>
+				<li>If this does not work, the fields will show as 'None', and can be edited later.</li>
+				<li>To enter multiple genres, separate by commas to enable filtering features.</li>
+			</ul>
+		</div>
+		<form action="{% url 'watchlist_add' %}" method="POST">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button class="btn btn-primary" type="submit">Add</button>
+		</form>
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<p class="text-center">Return to <a href="{% url 'get_list' %}">home</a>.</p>
+		
+	</div>
+	
+</div>
+<script>check_storage()</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Import Titles{% endblock %}
+{% block content %} 
+  
+
+<div class="container py-5 centered">
+	<div class="centered">
+		<h1 style="text-align: center;">Import Titles from Service</h1>
+		<ul>
+			<li>Enter exact email and password for the selected service.</li>
+			<li>The profile name is only necessary for Netflix, if you have more than one profile</li>
+			<li>When importing from Prime Video, you will likely get a text asking to approve sign in. To complete importing, allow the sign-in.</li>
+			<li>Usernames and passwords will not be saved, and if you wish to import again, they need to be reentered.</li>
+			<li>You are free to navigate while the importing is happening. If more than 5 minutes have passed, it has failed.</li>
+			<li>Please do not request importing several times in short succession, as this may create concern with the service, causing your account to lock.</li>
+		</ul>
+		<form action="{% url 'import_add' %}" method="POST">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button class="btn btn-primary" type="submit">Add</button>
+		</form>
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		<p class="text-center">Return to <a href="{% url 'get_list' %}">home</a>.</p>
+	</div>
+</div>
+<script>check_storage()</script>
+{% endblock %}

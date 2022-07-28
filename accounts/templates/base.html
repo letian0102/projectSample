@@ -1,0 +1,121 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Template page base{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
+  <script>
+    function high_contrast() {
+      var b = document.body;
+      var buttons = document.getElementsByTagName('button');
+      if(b.classList.contains('hc-mode')){
+          b.classList.remove('hc-mode');
+          for(const but of buttons) {
+            but.classList.remove('btn-dark');
+            if(but.id == "hcbutton"){
+              but.classList.add('btn-secondary');
+            }
+            else {
+              but.classList.add('btn-outline-primary');
+            }
+          }
+          b.classList.add('non-hc-mode');
+          document.getElementById('watchlist-scroll').classList.add('blueScroll');
+          localStorage.setItem('hc-Mode', 'disabled');
+      }
+      else
+      {
+          b.classList.remove('non-hc-mode');
+          b.classList.add('hc-mode');
+          for(const but of buttons) {
+            but.classList.remove('btn-outline-primary');
+            but.classList.add('btn-dark');
+          }
+          document.getElementById('watchlist-scroll').classList.remove('blueScroll');
+          localStorage.setItem('hc-Mode', 'enabled');
+      }
+    };
+
+    function check_storage() {
+      if(localStorage.getItem('hc-Mode') == 'enabled'){
+        document.body.classList.add('hc-mode');
+        var buttons = document.getElementsByTagName('button');
+        for(const but of buttons) {
+            but.classList.remove('btn-outline-primary');
+            but.classList.add('btn-dark');
+        }
+        document.getElementById('watchlist-scroll').classList.remove('blueScroll');
+        
+      }
+      else
+      {
+        document.body.classList.add('non-hc-mode');
+      }
+    };
+  </script>
+  <style>
+    .non-hc-mode {
+      background-color: powderblue;
+    }
+    .hc-mode {
+      background-color: white;
+      text-color: black;
+    }
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .top-left-logo {
+      position: absolute;
+      top: 2%;
+      left: 2%;
+    }
+    .bottom-centered {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .top-centered {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .button1 {
+      background-color: blue;
+      color: black;
+      border: 2px solid #4CAF50;
+    }
+    .button1:hover {
+      background-color: black;
+      color: white;
+    }
+    .divScroll {
+      border: 4px solid black;
+        overflow-y: scroll;
+        height: 55%;
+        width: 65%;
+        resize: none;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        text-align: center;
+    }
+    .blueScroll {
+      background-color: #7DDDD4;
+      border: 5px solid blue;
+    }
+
+  </style>
+</head>
+<body>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
